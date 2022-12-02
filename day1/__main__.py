@@ -1,10 +1,6 @@
 from itertools import groupby
 
 
-def solve():
-    return (part_one(), part_two())
-
-
 def part_one():
     with open("day1/input.txt") as f:
         return max(
@@ -32,3 +28,7 @@ def part_two():
                 reverse=True
             )[:3]
         )
+
+
+if __name__ == "__main__":
+    print((part_one(), part_two()))

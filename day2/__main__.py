@@ -1,7 +1,3 @@
-def solve():
-    return (part_one(), part_two())
-
-
 def get_score_1(round):
     win = 6
     draw = 3
@@ -75,3 +71,7 @@ def part_one():
 def part_two():
     with open("day2/input.txt") as f:
         return sum([get_score_2(round.strip()) for round in f.readlines()])
+
+
+if __name__ == "__main__":
+    print((part_one(), part_two()))

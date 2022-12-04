@@ -1,0 +1,17 @@
+def part_one(filename):
+    with open(filename) as f:
+        lines = [l.strip() for l in f.readlines()]
+        pass
+
+
+def part_two(filename):
+    with open(filename) as f:
+        lines = [l.strip() for l in f.readlines()]
+        pass
+
+
+if __name__ == "__main__":
+    cur_dir = __file__.split("/")[0]
+    assert part_one(f"{cur_dir}/test.txt") == 0
+    assert part_two(f"{cur_dir}/test.txt") == 0
+    print(part_one(f"{cur_dir}/input.txt"), part_two(f"{cur_dir}/input.txt"))

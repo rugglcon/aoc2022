@@ -1,8 +1,8 @@
 from itertools import groupby
 
 
-def part_one():
-    with open("day1/input.txt") as f:
+def part_one(filename):
+    with open(filename) as f:
         return max(
             [
                 sum([int(x) for x in list(n)])
@@ -14,8 +14,8 @@ def part_one():
         )
 
 
-def part_two():
-    with open("day1/input.txt") as f:
+def part_two(filename):
+    with open(filename) as f:
         return sum(
             sorted(
                 [
@@ -31,4 +31,7 @@ def part_two():
 
 
 if __name__ == "__main__":
-    print((part_one(), part_two()))
+    cur_dir = __file__.split("/")[0]
+    assert part_one(f"{cur_dir}/test.txt") == 24000
+    assert part_two(f"{cur_dir}/test.txt") == 45000
+    print(part_one(f"{cur_dir}/input.txt"), part_two(f"{cur_dir}/input.txt"))

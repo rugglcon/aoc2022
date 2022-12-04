@@ -63,15 +63,18 @@ def get_score_2(round):
         return win + rock
 
 
-def part_one():
-    with open("day2/input.txt") as f:
+def part_one(filename):
+    with open(filename) as f:
         return sum([get_score_1(round.strip()) for round in f.readlines()])
 
 
-def part_two():
-    with open("day2/input.txt") as f:
+def part_two(filename):
+    with open(filename) as f:
         return sum([get_score_2(round.strip()) for round in f.readlines()])
 
 
 if __name__ == "__main__":
-    print((part_one(), part_two()))
+    cur_dir = __file__.split("/")[0]
+    assert part_one(f"{cur_dir}/test.txt") == 15
+    assert part_two(f"{cur_dir}/test.txt") == 12
+    print(part_one(f"{cur_dir}/input.txt"), part_two(f"{cur_dir}/input.txt"))

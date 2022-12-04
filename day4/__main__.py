@@ -31,6 +31,7 @@ def part_two(filename):
 
 
 if __name__ == "__main__":
-    assert part_one("day4/test.txt") == 2
-    assert part_two("day4/test.txt") == 4
-    print(part_one("day4/input.txt"), part_two("day4/input.txt"))
+    cur_dir = __file__.split("/")[0]
+    assert part_one(f"{cur_dir}/test.txt") == 2
+    assert part_two(f"{cur_dir}/test.txt") == 4
+    print(part_one(f"{cur_dir}/input.txt"), part_two(f"{cur_dir}/input.txt"))

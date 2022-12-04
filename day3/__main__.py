@@ -31,6 +31,7 @@ def part_two(filename):
     return sum(letters)
 
 if __name__ == "__main__":
-    assert part_one("day3/test.txt") == 157
-    assert part_two("day3/test.txt") == 70
-    print(part_one("day3/input.txt"), part_two("day3/input.txt"))
+    cur_dir = __file__.split("/")[0]
+    assert part_one(f"{cur_dir}/test.txt") == 157
+    assert part_two(f"{cur_dir}/test.txt") == 70
+    print(part_one(f"{cur_dir}/input.txt"), part_two(f"{cur_dir}/input.txt"))

@@ -3,13 +3,15 @@ from typing import Dict, List
 
 class Directory():
     parent: "Directory" = None
-    name: str = None
+    dir_name: str = None
     children: List["Directory"] = []
     size = 0
 
     def __init__(self, parent, name):
         self.parent = parent
-        self.name = name
+        self.dir_name = name
+        self.children = []
+        self.size = 0
     
     def add_file(self, size):
         self.size += size
@@ -18,15 +20,22 @@ class Directory():
         self.children.append(dir)
     
     def get_size(self):
-        print(f"getting size for dir {self.name}")
-        sizes = []
-        for c in self.children:
-            sizes.append(c.get_size())
-        
-        return sum(sizes) + self.size
+        return sum(
+            [c.get_size() for c in self.children]
+        ) + self.size
     
+    def get_path(self):
+        path = self.dir_name
+        if self.parent:
+            if self.parent.dir_name == "/":
+                parent_path = ""
+            else:
+                parent_path = f"{self.parent.get_path()}/"
+            path = f"{parent_path}{path}"
+        return path
+        
     def __repr__(self) -> str:
-        return self.name
+        return self.get_path()
 
 
 def part_one(filename):
@@ -40,37 +49,27 @@ def part_one(filename):
             if args[0] == "$":
                 if args[1] == "cd":
                     if args[2] == "..":
-                        print(f"in {cur_dir}, going to {cur_dir.parent}")
                         cur_dir = cur_dir.parent
                         prev_dir = cur_dir.parent
                     else:
-                        print(f"in {cur_dir}, entering {args[2]}")
-                        if args[2] not in dirs:
-                            print(f"adding dir {args[2]} from 'cd' command")
-                            dirs[args[2]] = Directory(cur_dir, args[2])
+                        if args[2] == "/":
+                            new_dir = Directory(cur_dir, args[2])
+                            dirs[new_dir.get_path()] = new_dir
+
+                        if cur_dir and cur_dir.get_path() + args[2] not in dirs:
+                            new_dir = Directory(cur_dir, args[2])
+                            dirs[new_dir.get_path()] = new_dir
 
                         prev_dir = cur_dir
-                        cur_dir = dirs[args[2]]
-                        print(f"entered {cur_dir} from {prev_dir}")
+                        cur_dir = new_dir
+                        if prev_dir:
+                            prev_dir.add_child_dir(cur_dir)
                 elif args[1] == "ls":
-                    print("ls")
                     continue
             else:
                 if args[0].isnumeric():
                     cur_dir.add_file(int(args[0]))
-                    print(f"added file {args[1]} to {cur_dir}")
-                elif args[0] == "dir":
-                    if args[1] not in dirs:
-                        print(f"adding dir {args[1]} from 'dir' command")
-                        dirs[args[1]] = Directory(cur_dir, args[1])
-
-                    cur_dir.add_child_dir(dirs[args[1]])
-                    print(f"add child {args[1]} to {cur_dir}")
     
-    for d in dirs.values():
-        print(d, d.children, d.parent)
-    
-    assert False
     return sum(
         [d.get_size() for d in dirs.values() if d.get_size() <= 100000]
     )

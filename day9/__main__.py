@@ -91,7 +91,7 @@ def part_two(filename):
             elif dir == "D":
                 head_step = -1
                 head_point = 1
-            
+
             for _ in range(0, int(steps)):
                 knots[0][head_point] += head_step
 
@@ -100,7 +100,7 @@ def part_two(filename):
                         tail_moves = move_tail(knots[i - 1], knots[i])
                         knots[i][0] += tail_moves[0]
                         knots[i][1] += tail_moves[1]
-                        if i == len(knots) - 1: # last tail
+                        if i == len(knots) - 1:  # last tail
                             points_visited.append((knots[i][0], knots[i][1]))
 
     return len(set(points_visited))

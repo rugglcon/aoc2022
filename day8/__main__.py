@@ -7,7 +7,7 @@ def fill_out_grid(lines):
     visualized, the grid this makes is actually
     the input rotated 90 degrees to the right
     """
-    tree_grid = [[] for _ in range(0, len(lines))]
+    tree_grid = [[] for _ in range(len(lines))]
     for i, line in enumerate(lines):
         tree_grid[i].extend(int(l) for l in line)
 
@@ -61,10 +61,10 @@ def part_one(filename):
             for j in range(1, len(tree_grid[i]) - 1):
                 if can_be_seen(
                     tree_grid[i][j],
-                    reversed([tree_grid[n][j] for n in range(0, i)]),
+                    reversed([tree_grid[n][j] for n in range(i)]),
                     [tree_grid[s][j] for s in range(i + 1, len(tree_grid))],
                     [tree_grid[i][w] for w in range(j + 1, len(tree_grid[i]))],
-                    reversed([tree_grid[i][e] for e in range(0, j)]),
+                    reversed([tree_grid[i][e] for e in range(j)]),
                 ):
                     num_visible += 1
 
@@ -77,14 +77,16 @@ def part_two(filename):
         scores = []
         for i in range(1, len(tree_grid) - 1):
             for j in range(1, len(tree_grid[i]) - 1):
-                scores.append(view_score(
-                    tree_grid[i][j],
-                    reversed([tree_grid[n][j] for n in range(0, i)]),
-                    [tree_grid[s][j] for s in range(i + 1, len(tree_grid))],
-                    [tree_grid[i][w] for w in range(j + 1, len(tree_grid[i]))],
-                    reversed([tree_grid[i][e] for e in range(0, j)]),
-                ))
-    
+                scores.append(
+                    view_score(
+                        tree_grid[i][j],
+                        reversed([tree_grid[n][j] for n in range(i)]),
+                        [tree_grid[s][j] for s in range(i + 1, len(tree_grid))],
+                        [tree_grid[i][w] for w in range(j + 1, len(tree_grid[i]))],
+                        reversed([tree_grid[i][e] for e in range(j)]),
+                    )
+                )
+
     return max(scores)
 
 

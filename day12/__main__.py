@@ -28,10 +28,13 @@ def make_graph(lines, start_letter):
 def do_path_search(graph, start, end, all_nodes, shortest_path, num):
     previous_nodes = {}
     shortest_path[start] = 0
+    visited = set()
     while_time = time()
-    while all_nodes:
+    nodes = [start]
+    while nodes:
+        print(len(visited))
         min_node = None
-        for node in all_nodes:
+        for node in nodes:
             if min_node is None:
                 min_node = node
             elif shortest_path[node] < shortest_path[min_node]:
@@ -51,12 +54,16 @@ def do_path_search(graph, start, end, all_nodes, shortest_path, num):
                 continue  # not in graph
             if (graph[n[0]][n[1]] - graph[min_node[0]][min_node[1]]) > 1:
                 continue  # can't move to this neighbor
+
+            if n not in visited:
+                nodes.append(n)
             val = shortest_path[min_node] + 1
             if val < shortest_path[n]:
                 shortest_path[n] = val
                 previous_nodes[n] = min_node
 
-        all_nodes.remove(min_node)
+        visited.add(min_node)
+        nodes.remove(min_node)
 
     end_while_time = time()
     print("took", end_while_time - while_time, "for while loop")

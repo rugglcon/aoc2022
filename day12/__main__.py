@@ -25,14 +25,12 @@ def make_graph(lines, start_letter):
     return graph, start_index, end_index
 
 
-def do_path_search(graph, start, end, all_nodes, shortest_path, num):
+def do_path_search(graph, start, end, shortest_path):
     previous_nodes = {}
     shortest_path[start] = 0
     visited = set()
-    while_time = time()
-    nodes = [start]
+    nodes = set([start])
     while nodes:
-        print(len(visited))
         min_node = None
         for node in nodes:
             if min_node is None:
@@ -56,28 +54,22 @@ def do_path_search(graph, start, end, all_nodes, shortest_path, num):
                 continue  # can't move to this neighbor
 
             if n not in visited:
-                nodes.append(n)
-            val = shortest_path[min_node] + 1
-            if val < shortest_path[n]:
-                shortest_path[n] = val
-                previous_nodes[n] = min_node
+                nodes.add(n)
+                val = shortest_path[min_node] + 1
+                if val < shortest_path[n]:
+                    shortest_path[n] = val
+                    previous_nodes[n] = min_node
 
         visited.add(min_node)
-        nodes.remove(min_node)
+        nodes.discard(min_node)
 
-    end_while_time = time()
-    print("took", end_while_time - while_time, "for while loop")
     path = []
     if end in previous_nodes:
         node = end
         while node != start:
             path.append(node)
-            if node not in previous_nodes:
-                print(shortest_path[end], shortest_path[start])
-                print(node, "not in previous_nodes", previous_nodes, path, start)
             node = previous_nodes[node]
 
-    print("found path for", start, num)
     return path
 
 
@@ -107,28 +99,11 @@ def part_two(filename):
                 all_nodes.append((i, j))
                 shortest_path[(i, j)] = sys.maxsize
 
-        for i, s in enumerate(start):
-            all_nodes_copy = copy.deepcopy(all_nodes)
+        for s in start:
             shortest_path_copy = copy.deepcopy(shortest_path)
-            start_search_time = time()
-            paths.append(do_path_search(graph, s, end, all_nodes_copy, shortest_path_copy, i))
-            end_search_time = time()
-            print("took", end_search_time - start_search_time, "to search for start", s)
-        # with futures.ThreadPoolExecutor(max_workers=20) as executor:
-        #     for i, s in enumerate(start):
-        #         executor.submit(
-        #             do_path_search,
-        #             graph,
-        #             s,
-        #             end,
-        #             copy.deepcopy(all_nodes),
-        #             copy.deepcopy(shortest_path),
-        #             i,
-        #         ).add_done_callback(lambda f: paths.append(f.result()))
+            paths.append(do_path_search(graph, s, end, shortest_path_copy))
 
-        print(len(paths))
-        print(min([len(s) for s in paths if s]))
-        return min([len(s) for s in paths])
+        return min([len(s) for s in paths if s])
 
 
 if __name__ == "__main__":
@@ -139,5 +114,7 @@ if __name__ == "__main__":
     assert part_two(f"{cur_dir}/test.txt") == 29
     part_1_time_start = time()
     print("part 1 real", part_one(f"{cur_dir}/input.txt"))
-    print("took", time() - part_1_time_start, "to run part 1")
+    end_part_1 = time()
+    print("took", end_part_1 - part_1_time_start, "to run part 1")
     print("part 2 real", part_two(f"{cur_dir}/input.txt"))
+    print("took", time() - end_part_1, "to run part 2")

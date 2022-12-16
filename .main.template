@@ -12,6 +12,15 @@ def part_two(filename):
 
 if __name__ == "__main__":
     cur_dir = __file__.split("/")[0]
+    print("part 1 test")
     assert part_one(f"{cur_dir}/test.txt") == 0
-    assert part_two(f"{cur_dir}/test.txt") == 0
-    print(part_one(f"{cur_dir}/input.txt"), part_two(f"{cur_dir}/input.txt"))
+    print("part 2 test")
+    part_2_test = part_two(f"{cur_dir}/test.txt")
+    print(part_2_test)
+    assert part_2_test == 0
+    print("part 1 real")
+    real_part_1 = part_one(f"{cur_dir}/input.txt")
+    print(real_part_1)
+    print("part 2 real")
+    real_part_2 = part_two(f"{cur_dir}/input.txt")
+    print(real_part_2)
